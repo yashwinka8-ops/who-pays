@@ -1,0 +1,228 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 701px) and (max-width: 1080px) {
+  .container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--r-lg);
+  padding: 18px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  transition: border-color var(--ease-smooth), box-shadow var(--ease-smooth);
+}
+
+.card:hover {
+  border-color: var(--border-glow);
+  box-shadow: var(--shadow-glow);
+}
+
+.heading {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.empty {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 10px 0;
+}
+
+/* Survivor list */
+.survivorList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.survivorItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 12px;
+  border-radius: var(--r-sm);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-green);
+  background: rgba(16,185,129,0.08);
+  border: 1px solid rgba(16,185,129,0.18);
+  transition: all 0.3s ease;
+}
+
+.survivorName {
+  transition: all 0.3s ease;
+}
+
+.eliminated {
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.02);
+  border-color: rgba(255,255,255,0.05);
+}
+
+.eliminated .survivorName {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+.elimTag {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(239,68,68,0.15);
+  color: var(--accent-red);
+  padding: 2px 6px;
+  border-radius: var(--r-sm);
+  animation: scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.resetBtn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: var(--r-sm);
+  padding: 7px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  width: 100%;
+  transition: all var(--ease);
+}
+
+.resetBtn:hover {
+  background: rgba(217,119,6,0.1);
+  border-color: rgba(217,119,6,0.3);
+  color: var(--text-primary);
+}
+
+/* History */
+.historyList {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 8px;
+}
+
+.historyItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  font-size: 13px;
+  animation: slideInRight 0.25s var(--ease-spring) forwards;
+}
+
+.histRound {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+  min-width: 26px;
+}
+
+.histName {
+  flex: 1;
+  font-weight: 700;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.histIcon { 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnRow {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.actionBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  border-radius: var(--r-sm);
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  transition: all var(--ease);
+}
+
+.actionBtn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  border-color: rgba(255,255,255,0.2);
+}
+
+/* Leaderboard */
+.lbList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lbItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  font-size: 13px;
+  animation: fadeUp 0.3s var(--ease-spring) forwards;
+}
+
+.lbMedal {
+  font-size: 16px;
+  min-width: 22px;
+  text-align: center;
+}
+
+.lbName {
+  flex: 1;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lbCount {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.06);
+  padding: 2px 8px;
+  border-radius: var(--r-full);
+}
+
+@media (max-width: 700px) {
+  .card { padding: 14px; }
+  .historyList { max-height: 150px; }
+}
