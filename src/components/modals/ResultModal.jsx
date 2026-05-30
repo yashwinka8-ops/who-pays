@@ -57,10 +57,21 @@ export default function ResultModal({ winner, challengeOpponent, onClose, onSpin
     return () => window.removeEventListener('keydown', handler)
   }, [isVisible, onClose])
 
-  function handleDownloadCard() {
+  async function handleDownloadCard() {
     const title = state.wheelTitle
       || { pay: 'Who pays?', dare: 'Who gets dared?', elimination: 'Who gets eliminated?', truth: 'Who tells the truth?', prize: 'Who gets the prize?', challenge: 'Challenge!' }[state.mode]
-    generateShareCard(winner, state.mode, title, displayText)
+    
+    try {
+      const blob = await generateShareCard(winner, state.mode, title, displayText)
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.download = `whopays-${winner.toLowerCase().replace(/\s+/g, '-')}.png`
+      link.href = url
+      link.click()
+      URL.revokeObjectURL(url)
+    } catch (err) {
+      console.error('Failed to generate card:', err)
+    }
   }
 
   const isLastManStanding = state.mode === 'elimination' && state.activeNames.length === 0
@@ -77,10 +88,25 @@ export default function ResultModal({ winner, challengeOpponent, onClose, onSpin
   async function handleNativeShare() {
     if (navigator.share) {
       try {
-        await navigator.share({
-          title: 'Who Pays?',
-          text: shareText,
-        })
+        const title = state.wheelTitle
+          || { pay: 'Who pays?', dare: 'Who gets dared?', elimination: 'Who gets eliminated?', truth: 'Who tells the truth?', prize: 'Who gets the prize?', challenge: 'Challenge!' }[state.mode]
+        
+        const blob = await generateShareCard(winner, state.mode, title, displayText)
+        const file = new File([blob], `whopays-${winner.toLowerCase().replace(/\s+/g, '-')}.png`, { type: 'image/png' })
+        
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            title: 'Who Pays?',
+            text: shareText,
+            files: [file]
+          })
+        } else {
+          // Fallback to text if browser doesn't support sharing files natively
+          await navigator.share({
+            title: 'Who Pays?',
+            text: shareText,
+          })
+        }
       } catch (err) { /* ignore cancel */ }
     } else {
       handleCopyText()

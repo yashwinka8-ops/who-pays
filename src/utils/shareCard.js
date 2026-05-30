@@ -1,8 +1,12 @@
 import { MODE_CONFIG } from './dares.js'
 
 export function generateShareCard(winnerName, mode, wheelTitle, dareText = null) {
-  const canvas = document.getElementById('share-canvas')
-  if (!canvas) return
+  return new Promise((resolve, reject) => {
+    const canvas = document.getElementById('share-canvas')
+    if (!canvas) {
+      reject(new Error('Canvas not found'))
+      return
+    }
 
   const ctx = canvas.getContext('2d')
   // 9:16 Aspect Ratio for Instagram Stories / WhatsApp Status
@@ -42,88 +46,88 @@ export function generateShareCard(winnerName, mode, wheelTitle, dareText = null)
 
 
   /* ---- 2. Dynamic Layout Calculation ---- */
-  let currentY = H * 0.25
+  let currentY = H * 0.18
 
   const question = wheelTitle && wheelTitle.trim()
   if (question) {
-    ctx.font = "600 32px 'Outfit', sans-serif"
+    ctx.font = "600 36px 'Outfit', sans-serif"
     ctx.fillStyle = 'rgba(255,255,255,0.4)'
     ctx.fillText('THE QUESTION', W / 2, currentY)
     
     currentY += 70
-    ctx.font = "800 64px 'Outfit', sans-serif"
+    ctx.font = "800 72px 'Outfit', sans-serif"
     ctx.fillStyle = 'rgba(255,255,255,0.95)'
-    _wrapText(ctx, `"${question}"`, W / 2, currentY, W - 160, 80)
+    _wrapText(ctx, `"${question}"`, W / 2, currentY, W - 160, 90)
     
     // Add extra space based on question length
     const lines = Math.ceil(ctx.measureText(`"${question}"`).width / (W - 160))
-    currentY += (lines * 80) + 80
+    currentY += (lines * 90) + 120
   } else {
-    currentY = H * 0.35
+    currentY = H * 0.28
   }
 
   /* ---- 3. Badge ---- */
-  const bW = 260, bH = 60, bX = (W - bW) / 2
+  const bW = 320, bH = 70, bX = (W - bW) / 2
   const grad = ctx.createLinearGradient(bX, 0, bX + bW, 0)
   grad.addColorStop(0, '#f59e0b')
   grad.addColorStop(1, '#ea580c')
   ctx.fillStyle = grad
-  _roundRect(ctx, bX, currentY, bW, bH, 30)
+  _roundRect(ctx, bX, currentY, bW, bH, 35)
   ctx.fill()
   
-  ctx.font = "800 22px 'Outfit', sans-serif"
+  ctx.font = "800 26px 'Outfit', sans-serif"
   ctx.fillStyle = '#fff'
   ctx.letterSpacing = '2px' // Simulated via padding natively or font
-  ctx.fillText(config.badge.toUpperCase(), W / 2, currentY + 39)
+  ctx.fillText(config.badge.toUpperCase(), W / 2, currentY + 46)
 
-  currentY += 150
+  currentY += 180
 
   /* ---- 4. Winner Name ---- */
-  const nameFontSize = winnerName.length > 12 ? 110 : winnerName.length > 7 ? 140 : 180
+  const nameFontSize = winnerName.length > 12 ? 140 : winnerName.length > 7 ? 170 : 220
   ctx.font = `900 ${nameFontSize}px 'Outfit', sans-serif`
   
-  const nameGrad = ctx.createLinearGradient(0, currentY - 100, 0, currentY + 40)
+  const nameGrad = ctx.createLinearGradient(0, currentY - 120, 0, currentY + 40)
   nameGrad.addColorStop(0, '#fef3c7')
   nameGrad.addColorStop(0.5, '#f59e0b')
   nameGrad.addColorStop(1, '#b45309')
   ctx.fillStyle = nameGrad
   
   // Neon Drop Shadow
-  ctx.shadowColor = 'rgba(245, 158, 11, 0.3)'
-  ctx.shadowBlur = 50
-  ctx.shadowOffsetY = 10
+  ctx.shadowColor = 'rgba(245, 158, 11, 0.4)'
+  ctx.shadowBlur = 60
+  ctx.shadowOffsetY = 15
   ctx.fillText(winnerName, W / 2, currentY)
   
   // Reset Shadow
   ctx.shadowBlur = 0
   ctx.shadowOffsetY = 0
 
-  currentY += 80
+  currentY += 100
 
   /* ---- 5. Subtitle ---- */
-  ctx.font = "600 40px 'Outfit', sans-serif"
+  ctx.font = "600 48px 'Outfit', sans-serif"
   ctx.fillStyle = 'rgba(255,255,255,0.5)'
   ctx.fillText(config.subtitle, W / 2, currentY)
 
-  currentY += 130
+  currentY += 160
 
   /* ---- 6. Dare Box ---- */
   if (dareText) {
     const dbW = W - 200, dbX = 100
     // Estimate height needed
-    ctx.font = "700 32px 'Outfit', sans-serif"
+    ctx.font = "700 36px 'Outfit', sans-serif"
     const lines = Math.ceil(ctx.measureText(dareText).width / (dbW - 80))
-    const dbH = Math.max(160, lines * 45 + 80)
+    const dbH = Math.max(180, lines * 50 + 90)
 
     ctx.fillStyle = 'rgba(13,148,136,0.08)'
-    _roundRect(ctx, dbX, currentY, dbW, dbH, 30)
+    _roundRect(ctx, dbX, currentY, dbW, dbH, 40)
     ctx.fill()
     ctx.strokeStyle = 'rgba(13,148,136,0.25)'
-    ctx.lineWidth = 3
+    ctx.lineWidth = 4
     ctx.stroke()
 
     ctx.fillStyle = '#2dd4bf'
-    _wrapText(ctx, dareText, W / 2, currentY + 70, dbW - 80, 45)
+    _wrapText(ctx, dareText, W / 2, currentY + 80, dbW - 80, 50)
   }
 
   /* ---- 7. Footer Branding ---- */
@@ -145,11 +149,11 @@ export function generateShareCard(winnerName, mode, wheelTitle, dareText = null)
   ctx.fillStyle = 'rgba(255,255,255,0.3)'
   ctx.fillText('whopays.fun', W / 2, footY + 45)
 
-  /* ---- Download Trigger ---- */
-  const link = document.createElement('a')
-  link.download = `whopays-${winnerName.toLowerCase().replace(/\s+/g, '-')}.png`
-  link.href = canvas.toDataURL('image/png')
-  link.click()
+  /* ---- Return Blob ---- */
+  canvas.toBlob((blob) => {
+    if (blob) resolve(blob)
+    else reject(new Error('Failed to generate image'))
+  }, 'image/png')
 }
 
 function _roundRect(ctx, x, y, w, h, r) {
