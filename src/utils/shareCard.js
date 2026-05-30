@@ -154,6 +154,7 @@ export function generateShareCard(winnerName, mode, wheelTitle, dareText = null)
     if (blob) resolve(blob)
     else reject(new Error('Failed to generate image'))
   }, 'image/png')
+  })
 }
 
 function _roundRect(ctx, x, y, w, h, r) {
