@@ -13,7 +13,7 @@ export default function Footer() {
         <nav className={styles.links} aria-label="Footer navigation">
           <Link to="/" className={styles.link}>Play</Link>
           <Link to="/how-it-works" className={styles.link}>How it Works</Link>
-          <a href="mailto:sponsor@whopays.app" className={styles.link}>Advertise</a>
+          <a href="mailto:sponsor@whopays.fun" className={styles.link}>Advertise</a>
         </nav>
 
         <p className={styles.copy}>
