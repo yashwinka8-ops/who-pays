@@ -5,10 +5,16 @@
   position: relative;
 }
 
-.settingsBtn {
+.topNav {
   position: absolute;
   top: 16px;
   right: 16px;
+  display: flex;
+  gap: 8px;
+  z-index: 100;
+}
+
+.iconBtn {
   background: transparent;
   border: none;
   cursor: pointer;
@@ -18,11 +24,14 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
-  z-index: 100;
 }
 
-.settingsBtn:hover {
+.iconBtn:hover {
   background: rgba(255, 255, 255, 0.05);
+}
+
+.mobileStatsBtn {
+  display: none;
 }
 
 /* Confetti root */
@@ -189,7 +198,9 @@
   .modeArea { gap: 12px; }
   .nameArea { gap: 12px; }
   .center { gap: 10px; }
-  .right  { flex-direction: column; display: flex; gap: 12px; }
+  .right  { display: none !important; }
+
+  .mobileStatsBtn { display: flex; }
 
   .wheelTitle { font-size: 15px; }
   .keyHint    { display: none; }

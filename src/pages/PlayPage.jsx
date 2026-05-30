@@ -7,8 +7,9 @@ import WheelCanvas from '../components/wheel/WheelCanvas.jsx'
 import StatsPanel from '../components/panels/StatsPanel.jsx'
 import ResultModal from '../components/modals/ResultModal.jsx'
 import SettingsModal from '../components/modals/SettingsModal.jsx'
+import StatsModal from '../components/modals/StatsModal.jsx'
 import { useKeyboard } from '../hooks/useKeyboard.js'
-import { Settings } from 'lucide-react'
+import { Settings, BarChart2 } from 'lucide-react'
 import styles from './PlayPage.module.css'
 
 export default function PlayPage() {
@@ -17,6 +18,7 @@ export default function PlayPage() {
   const [challengeOpponent, setChallengeOpponent] = useState(null)
   const [challengeMatch, setChallengeMatch] = useState(null)
   const [showSettings, setShowSettings] = useState(false)
+  const [showStats, setShowStats] = useState(false)
   const wheelRef = useRef(null)
 
   const defaultTitle = {
@@ -81,13 +83,22 @@ export default function PlayPage() {
       {/* Share canvas (hidden) */}
       <canvas id="share-canvas" style={{ display: 'none' }} aria-hidden="true" />
       
-      <button 
-        onClick={() => setShowSettings(true)}
-        className={styles.settingsBtn}
-        aria-label="Settings"
-      >
-        <Settings size={22} color="var(--text-muted)" />
-      </button>
+      <div className={styles.topNav}>
+        <button 
+          onClick={() => setShowStats(true)}
+          className={`${styles.iconBtn} ${styles.mobileStatsBtn}`}
+          aria-label="History & Stats"
+        >
+          <BarChart2 size={22} color="var(--text-muted)" />
+        </button>
+        <button 
+          onClick={() => setShowSettings(true)}
+          className={styles.iconBtn}
+          aria-label="Settings"
+        >
+          <Settings size={22} color="var(--text-muted)" />
+        </button>
+      </div>
 
       <div className={styles.grid}>
 
@@ -136,9 +147,6 @@ export default function PlayPage() {
 
       </div>
 
-      <footer style={{ textAlign: 'center', padding: '40px 20px 0', color: 'var(--text-muted)', fontSize: '12px', opacity: 0.6 }}>
-        &copy; 2026 whopays.fun
-      </footer>
 
       {/* Result modal */}
       {winner && (
@@ -152,6 +160,9 @@ export default function PlayPage() {
       )}
       {showSettings && (
         <SettingsModal onClose={() => setShowSettings(false)} />
+      )}
+      {showStats && (
+        <StatsModal onClose={() => setShowStats(false)} />
       )}
     </div>
   )

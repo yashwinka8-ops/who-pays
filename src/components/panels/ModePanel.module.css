@@ -13,13 +13,41 @@
   box-shadow: var(--shadow-glow);
 }
 
+.header {
+  display: flex;
+  justify-content: flex-start;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+  padding-bottom: 14px;
+  user-select: none;
+}
+
 .heading {
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: var(--text-secondary);
-  margin-bottom: 14px;
+  margin: 0;
+}
+
+.toggleIcon {
+  color: var(--text-muted);
+  transition: color var(--ease);
+}
+
+.header:hover .toggleIcon {
+  color: var(--text-primary);
+}
+
+.body {
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Tabs */

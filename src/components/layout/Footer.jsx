@@ -17,7 +17,7 @@ export default function Footer() {
         </nav>
 
         <p className={styles.copy}>
-          © 2025 Who Pays? &mdash; Settle bills with drama 😈
+          &copy; {new Date().getFullYear()} Who Pays? &mdash; Settle bills with drama 😈
         </p>
       </div>
     </footer>
